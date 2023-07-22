@@ -13,6 +13,6 @@ import lombok.extern.jackson.Jacksonized;
 public class CurrencyPriceResponse {
 
     @JsonProperty("USDBRL")
-    public USDBRLResponse usdbrlResponse;
+    public USDBRLResponse usdbrl;
 
 }

@@ -16,5 +16,6 @@ public class KafkaEvents {
     public void sendNewKafkaEvent(QuotationEventRequest quotation) {
         log.info("Sending new kafka event: {}", quotation);
         quotationRequestEmitter.send(quotation).toCompletableFuture().join();
+        log.info("Kafka event sent successfully!");
     }
 }
