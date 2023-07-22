@@ -1,4 +1,4 @@
-package br.com.mining.company.dto;
+package br.com.mining.company.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.Date;
 @Builder
 @Jacksonized
 @AllArgsConstructor
-public class QuotationDTO {
+public class QuotationEventRequest {
 
     private Date date;
 
