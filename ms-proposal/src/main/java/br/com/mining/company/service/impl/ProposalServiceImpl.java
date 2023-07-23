@@ -9,9 +9,11 @@ import br.com.mining.company.service.ProposalService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Slf4j
 @ApplicationScoped
@@ -26,15 +28,12 @@ public class ProposalServiceImpl implements ProposalService {
     @Override
     public ProposalDetailsDTO findFullProposal(long id) {
         log.info("Finding full proposal by id: {}", id);
-        ProposalEntity proposalEntity = proposalRepository.findById(id);
-        return ProposalDetailsDTO.builder()
-                .proposalId(proposalEntity.getId())
-                .customer(proposalEntity.getCustomer())
-                .priceTonne(proposalEntity.getPriceTonne())
-                .tonnes(proposalEntity.getTonnes())
-                .country(proposalEntity.getCountry())
-                .proposalValidityDays(proposalEntity.getProposalValidityDays())
-                .build();
+        ProposalEntity proposalEntity = Optional.ofNullable(proposalRepository.findById(id))
+                .orElseThrow(() -> {
+                    log.error("Proposal not found!");
+                    return new NotFoundException();
+                });
+        return buildProposalDetailsDTO(proposalEntity);
     }
 
     @Override
@@ -80,5 +79,17 @@ public class ProposalServiceImpl implements ProposalService {
             e.printStackTrace();
             throw new RuntimeException("Error to create new proposal.");
         }
+    }
+
+    private ProposalDetailsDTO buildProposalDetailsDTO(ProposalEntity proposalEntity) {
+        log.info("Building proposal details with id: {}...", proposalEntity.getId());
+        return ProposalDetailsDTO.builder()
+                .proposalId(proposalEntity.getId())
+                .customer(proposalEntity.getCustomer())
+                .priceTonne(proposalEntity.getPriceTonne())
+                .tonnes(proposalEntity.getTonnes())
+                .country(proposalEntity.getCountry())
+                .proposalValidityDays(proposalEntity.getProposalValidityDays())
+                .build();
     }
 }
