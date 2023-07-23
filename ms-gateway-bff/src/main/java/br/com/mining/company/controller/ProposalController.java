@@ -18,33 +18,19 @@ public class ProposalController {
     @Path("/{id}")
     @RolesAllowed({"user", "manager"})
     public Response getProposalDetailsById(@PathParam("id") long proposalId) {
-        try {
-            return Response.ok(proposalService.getProposalDetailsById(proposalId), MediaType.APPLICATION_JSON).build();
-        } catch (ServerErrorException e) {
-            return Response.serverError().build();
-        }
+        return Response.ok(proposalService.getProposalDetailsById(proposalId), MediaType.APPLICATION_JSON).build();
     }
 
     @POST
     @RolesAllowed("proposal-customer")
     public Response createProposal(ProposalDetailsDTO proposalDetailsDTO) {
-        int proposalRequestStatus = proposalService.createProposal(proposalDetailsDTO).getStatus();
-        if (proposalRequestStatus > 199 && proposalRequestStatus < 205) {
-            return Response.ok().build();
-        } else {
-            return Response.status(proposalRequestStatus).build();
-        }
+        return Response.ok(proposalService.createProposal(proposalDetailsDTO).getStatus()).build();
     }
 
     @DELETE
     @Path("/remove/{id}")
     @RolesAllowed("manager")
     public Response removeProposal(@PathParam("id") long id) {
-        int proposalRequestStatus = proposalService.removeProposal(id).getStatus();
-        if (proposalRequestStatus > 199 && proposalRequestStatus < 205) {
-            return Response.ok().build();
-        } else {
-            return Response.status(proposalRequestStatus).build();
-        }
+        return Response.ok(proposalService.removeProposal(id).getStatus()).build();
     }
 }

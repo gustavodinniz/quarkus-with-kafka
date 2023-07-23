@@ -6,6 +6,7 @@ import br.com.mining.company.service.ReportService;
 import br.com.mining.company.utils.CSVHelper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.ws.rs.BadRequestException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -23,13 +24,23 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ByteArrayInputStream generateCSVOpportunityReport() {
         log.info("Retrieving opportunities data...");
-        List<OpportunityDTO> opportunityData = reportRestClient.retrieveOpportunitiesData();
-        return CSVHelper.opportunitiesToCSV(opportunityData);
+        try {
+            List<OpportunityDTO> opportunityData = reportRestClient.retrieveOpportunitiesData();
+            return CSVHelper.opportunitiesToCSV(opportunityData);
+        } catch (Exception e) {
+            log.error("Error retrieving opportunities data: {}", e.getMessage());
+            throw new BadRequestException();
+        }
     }
 
     @Override
     public List<OpportunityDTO> getOpportunitiesData() {
         log.info("Retrieving opportunities data...");
-        return reportRestClient.retrieveOpportunitiesData();
+        try {
+            return reportRestClient.retrieveOpportunitiesData();
+        } catch (Exception e) {
+            log.error("Error retrieving opportunities data: {}", e.getMessage());
+            throw new BadRequestException();
+        }
     }
 }
