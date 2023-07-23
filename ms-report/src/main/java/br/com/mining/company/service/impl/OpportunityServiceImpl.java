@@ -55,10 +55,6 @@ public class OpportunityServiceImpl implements OpportunityService {
                 .build();
     }
 
-    @Override
-    public List<OpportunityDTO> generateOpportunityData() {
-        return null;
-    }
 
     @Override
     public ByteArrayInputStream generateCSVOpportunityReport() {
