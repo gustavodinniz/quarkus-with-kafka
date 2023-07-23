@@ -28,10 +28,10 @@ services:
 
   postgres:
     image: postgres
-    container_name: ms-quotation-db
+    container_name: mining-company-db
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: quotation
+      POSTGRES_DB: mining-company
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: 123456
