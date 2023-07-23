@@ -35,7 +35,7 @@ public class QuotationService {
     public void getCurrencyPrice() {
         log.info("Getting currency price...");
         CurrencyPriceResponse currencyPriceResponse = currencyPriceClient.getPriceByPair(PAIR);
-        log.info("Currency price: {}", currencyPriceResponse);
+        log.info("Currency price: {}", currencyPriceResponse.getUsdbrl());
         if (updateCurrentInfoPrice(currencyPriceResponse)) {
             log.info("Sending new kafka event...");
             kafkaEvents.sendNewKafkaEvent(buildQuotationEventRequest(currencyPriceResponse));
@@ -57,6 +57,7 @@ public class QuotationService {
                 saveQuotation(currencyPriceResponse);
             }
         }
+        log.info("Update price: {}", updatePrice);
         return updatePrice;
     }
 
