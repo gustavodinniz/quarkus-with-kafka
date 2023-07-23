@@ -67,6 +67,18 @@ public class OpportunityServiceImpl implements OpportunityService {
         return CSVHelper.opportunitiesToCSV(opportunities);
     }
 
+    @Override
+    public List<OpportunityDTO> generateOpportunityData() {
+        log.info("Generating opportunity data...");
+        List<OpportunityDTO> opportunities = new ArrayList<>();
+        opportunityRepository.findAll()
+                .stream()
+                .forEach(opportunity -> opportunities.add(buildOpportunityDTO(opportunity)));
+
+        log.info("Opportunity data generated successfully!");
+        return opportunities;
+    }
+
     private OpportunityDTO buildOpportunityDTO(OpportunityEntity opportunity) {
         log.info("Building opportunity with id: {}", opportunity.getId());
         return OpportunityDTO.builder()
