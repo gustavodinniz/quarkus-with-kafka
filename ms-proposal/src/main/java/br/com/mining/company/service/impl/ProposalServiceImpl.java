@@ -38,6 +38,7 @@ public class ProposalServiceImpl implements ProposalService {
     }
 
     @Override
+    @Transactional
     public void createNewProposal(ProposalDetailsDTO proposalDetailsDTO) {
         log.info("Creating new proposal...");
         ProposalEventRequest proposal = buildAndSaveNewProposal(proposalDetailsDTO);
@@ -54,7 +55,6 @@ public class ProposalServiceImpl implements ProposalService {
         log.info("Proposal removed successfully!");
     }
 
-    @Transactional
     private ProposalEventRequest buildAndSaveNewProposal(ProposalDetailsDTO proposalDetailsDTO) {
         try {
             log.info("Building proposal...");
@@ -72,7 +72,7 @@ public class ProposalServiceImpl implements ProposalService {
 
             log.info("Proposal saved successfully!");
             return ProposalEventRequest.builder()
-                    .proposalId(proposalRepository.findByCustomer(proposal.getCustomer()).get().getId())
+                    .proposalId(proposal.getId())
                     .customer(proposal.getCustomer())
                     .priceTonne(proposal.getPriceTonne())
                     .build();
